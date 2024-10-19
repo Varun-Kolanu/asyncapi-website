@@ -1,10 +1,18 @@
-const { writeFileSync } = require('fs');
-const { resolve } = require('path');
-const { google } = require('googleapis');
+import { writeFileSync } from 'fs';
+import { resolve } from 'path';
+import { google, calendar_v3 } from 'googleapis';
 
-async function buildMeetings(writePath) {
+interface EventItem {
+  title: string;
+  calLink: string;
+  url?: string;
+  banner?: string;
+  date: Date;
+}
+
+async function buildMeetings(writePath: string): Promise<void> {
   let auth;
-  let calendar;
+  let calendar: calendar_v3.Calendar;
 
   try {
     auth = new google.auth.GoogleAuth({
@@ -14,14 +22,14 @@ async function buildMeetings(writePath) {
 
     calendar = google.calendar({ version: 'v3', auth });
 
-  } catch (err) {
-    throw new Error(`Authentication failed: ${err.message}`);
+  } catch (err: any) {
+    throw new Error(`Authentication failed: ${err instanceof Error ? err.message : String(err)}`);
   }
 
-  let eventsItems;
+  let eventsItems: EventItem[];
 
   try {
-    //cron job runs this always on midnight
+    // cron job runs this always on midnight
     const currentTime = new Date(Date.now()).toISOString();
     const timeMin = new Date(
       Date.parse(currentTime) - 100 * 24 * 60 * 60 * 1000
@@ -31,21 +39,21 @@ async function buildMeetings(writePath) {
     ).toISOString();
 
     const eventsList = await calendar.events.list({
-      calendarId: process.env.CALENDAR_ID,
+      calendarId: process.env.CALENDAR_ID || '',
       timeMax: timeMax,
       timeMin: timeMin,
     });
 
-    eventsItems = eventsList.data.items.map((e) => {
+    eventsItems = (eventsList.data.items || []).map((e): EventItem => {
       return {
-        title: e.summary,
-        calLink: e.htmlLink,
+        title: e.summary || '',
+        calLink: e.htmlLink || '',
         url:
           e.extendedProperties?.private &&
           `https://github.com/asyncapi/community/issues/${e.extendedProperties.private.ISSUE_ID}`,
         banner:
           e.extendedProperties?.private && e.extendedProperties.private.BANNER,
-        date: new Date(e.start.dateTime),
+        date: new Date(e.start?.dateTime || '')
       };
     });
 
@@ -55,13 +63,15 @@ async function buildMeetings(writePath) {
     writeFileSync(writePath, eventsForHuman);
 
   } catch (err) {
-    throw new Error(`Failed to fetch or process events: ${err.message}`);
+    throw new Error(`Failed to fetch or process events: ${err instanceof Error ? err.message : String(err)}`);
   }
 }
 
 /* istanbul ignore next */
 if (require.main === module) {
-  buildMeetings(resolve(__dirname, '../config', 'meetings.json'));
+  buildMeetings(resolve(__dirname, '../config', 'meetings.json')).catch(err => {
+    console.error(err);
+  });
 }
 
-module.exports = { buildMeetings };
+export { buildMeetings };
