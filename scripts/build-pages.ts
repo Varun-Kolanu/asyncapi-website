@@ -1,6 +1,5 @@
-// const fs = require('fs');
 import fs from 'fs';
-const path = require('path');
+import path from 'path';
 
 const SRC_DIR: string = 'markdown';
 const TARGET_DIR: string = 'pages';
@@ -58,4 +57,4 @@ function copyAndRenameFiles(srcDir: string, targetDir: string): void {
 
 copyAndRenameFiles(SRC_DIR, TARGET_DIR);
 
-module.exports = { copyAndRenameFiles, capitalizeJsxTags };
+export { copyAndRenameFiles, capitalizeJsxTags };

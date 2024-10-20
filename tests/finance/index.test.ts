@@ -103,3 +103,5 @@ describe('buildFinanceInfoList', () => {
     }
   });
 });
+
+export { }

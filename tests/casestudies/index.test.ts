@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const buildCaseStudiesList = require('../../scripts/casestudies/index');
-const { yaml1,yaml2,json1,json2 } = require("../fixtures/caseStudyData");
+const { yaml1, yaml2, json1, json2 } = require("../fixtures/caseStudyData");
 
 describe('buildCaseStudiesList', () => {
   const tempDir = path.join(__dirname, 'temp-test-dir');
@@ -78,3 +78,5 @@ describe('buildCaseStudiesList', () => {
 
 
 });
+
+export { };

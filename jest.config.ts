@@ -5,15 +5,12 @@ module.exports = {
     coverageReporters: ['text', 'lcov', 'json-summary'],
     coverageDirectory: 'coverage',
     collectCoverageFrom: ['scripts/**/*.ts', 'scripts/**/*.js'],
-    globals: {
-        'ts-jest': {
-            isolatedModules: true,
-        },
-    },
+    moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+    preset: 'ts-jest',
     testEnvironment: "node",
     // To disallow netlify edge function tests from running
     testMatch: ['**/tests/**/*.test.*', '!**/netlify/**/*.test.*'],
     transform: {
-        "^.+.ts$": ["ts-jest", {}],
+        "^.+.ts$": ["ts-jest", { isolatedModules: true }],
     },
 };

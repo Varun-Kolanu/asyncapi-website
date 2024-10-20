@@ -37,7 +37,7 @@ describe('buildNewsroomVideos', () => {
         expectedUrl.searchParams.set('channelId', 'UCIz9zGwDLbrYQcDKVXdOstQ');
         expectedUrl.searchParams.set('eventType', 'completed');
         expectedUrl.searchParams.set('type', 'video');
-        expectedUrl.searchParams.set('order', 'Date');
+        expectedUrl.searchParams.set('order', 'date');
         expectedUrl.searchParams.set('maxResults', '5');
 
         expect(fetch).toHaveBeenCalledWith(expectedUrl.toString());
@@ -99,3 +99,5 @@ describe('buildNewsroomVideos', () => {
     });
 
 });
+
+export { }

@@ -32,7 +32,10 @@
     "**/*.tsx",
     "types/**/*.d.ts",
     "**/*.json",
-    "tjest.config.js"
+    "tjest.config.js",
+    "tests/build-docs/addDocButtons.test.ts",
+    "tests/build-meetings.test.ts",
+    "tests/build-pages.test.ts"
   ],
   "exclude": [
     "node_modules",

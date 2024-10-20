@@ -23,3 +23,5 @@ describe('convertToJson', () => {
     }
   });
 });
+
+export { }
